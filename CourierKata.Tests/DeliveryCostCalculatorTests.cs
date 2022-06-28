@@ -22,7 +22,7 @@ namespace CourierKata.Tests
         [Fact]
         public void CalculateCost_Single_SmallParcel()
         {
-            var parcel = new Parcel(1, 1, 1);
+            var parcel = new Parcel(1, 1, 1, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
             Assert.Equal(300, result.TotalCostPence);
         }
@@ -30,7 +30,7 @@ namespace CourierKata.Tests
         [Fact]
         public void CalculateCost_Single_MediumParcel()
         {
-            var parcel = new Parcel(5, 10, 20);
+            var parcel = new Parcel(5, 10, 20, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
             Assert.Equal(800, result.TotalCostPence);
         }
@@ -38,7 +38,7 @@ namespace CourierKata.Tests
         [Fact]
         public void CalculateCost_Single_LargeParcel()
         {
-            var parcel = new Parcel(80, 10, 20);
+            var parcel = new Parcel(80, 10, 20, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
             Assert.Equal(1500, result.TotalCostPence);
         }
@@ -46,7 +46,7 @@ namespace CourierKata.Tests
         [Fact]
         public void CalculateCost_Single_ExtraLargeParcel()
         {
-            var parcel = new Parcel(110, 50, 20);
+            var parcel = new Parcel(110, 50, 20, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
             Assert.Equal(2500, result.TotalCostPence);
         }
@@ -56,12 +56,12 @@ namespace CourierKata.Tests
         {
             var parcels = new List<Parcel>()
             { 
-                new Parcel(3, 5, 8),        // small, $3
-                new Parcel(3, 5, 10),       // medium, $8
-                new Parcel(10, 15, 30),     // medium, $8
-                new Parcel(10, 15, 60),     // large, $15
-                new Parcel(150, 40, 40),    // extra large, $25
-                new Parcel(1, 1, 111),      // extra large, $25
+                new Parcel(3, 5, 8, 1),        // small, $3
+                new Parcel(3, 5, 10, 1),       // medium, $8
+                new Parcel(10, 15, 30, 1),     // medium, $8
+                new Parcel(10, 15, 60, 1),     // large, $15
+                new Parcel(150, 40, 40, 1),    // extra large, $25
+                new Parcel(1, 1, 111, 1),      // extra large, $25
             };
 
             var expected = 300 + 800 + 800 + 1500 + 2500 + 2500;
@@ -74,7 +74,7 @@ namespace CourierKata.Tests
         [Fact]
         public void CalculateCost_Single_SpeedyShipping()
         {
-            var parcel = new Parcel(5, 15, 20);
+            var parcel = new Parcel(5, 15, 20, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
             Assert.Equal(1600, result.SpeedyShippingCostPence);
         }
@@ -84,10 +84,10 @@ namespace CourierKata.Tests
         {
             var parcels = new List<Parcel>()
             {
-                new Parcel(3, 5, 8),        // small, $3
-                new Parcel(3, 5, 10),       // medium, $8
-                new Parcel(10, 15, 60),     // large, $15
-                new Parcel(150, 40, 40),    // extra large, $25
+                new Parcel(3, 5, 8, 1),        // small, $3
+                new Parcel(3, 5, 10, 1),       // medium, $8
+                new Parcel(10, 15, 60, 1),     // large, $15
+                new Parcel(150, 40, 40, 1),    // extra large, $25
             };
 
             var expected = (300 + 800 + 1500 + 2500) * 2;

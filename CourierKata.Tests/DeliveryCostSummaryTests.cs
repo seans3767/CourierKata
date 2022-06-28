@@ -24,7 +24,7 @@ namespace CourierKata.Tests
         [Fact]
         public void SingleItemGivesCorrectTotal()
         {
-            var parcel = new Parcel(1, 2, 3);
+            var parcel = new Parcel(1, 2, 3, 1);
             var parcelCost = new ParcelCost()
             {
                 Parcel = parcel,
@@ -40,17 +40,17 @@ namespace CourierKata.Tests
         {
             var parcelCost1 = new ParcelCost()
             {
-                Parcel = new Parcel(1, 2, 3),
+                Parcel = new Parcel(1, 2, 3, 1),
                 CostPence = 99
             };
             var parcelCost2 = new ParcelCost()
             {
-                Parcel = new Parcel(1, 2, 3),
+                Parcel = new Parcel(1, 2, 3, 1),
                 CostPence = 250
             };
             var parcelCost3 = new ParcelCost()
             {
-                Parcel = new Parcel(1, 2, 3),
+                Parcel = new Parcel(1, 2, 3, 1),
                 CostPence = 10000
             };
             var parcelCosts = new List<ParcelCost>() { parcelCost1, parcelCost2, parcelCost3 };
@@ -61,7 +61,7 @@ namespace CourierKata.Tests
         [Fact]
         public void SingleItemSpeedyShippingIsDouble()
         {
-            var parcel = new Parcel(1, 2, 3);
+            var parcel = new Parcel(1, 2, 3, 1);
             var parcelCost = new ParcelCost()
             {
                 Parcel = parcel,
