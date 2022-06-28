@@ -1,11 +1,12 @@
 ﻿
 namespace CourierKata
 {
-    public enum ParcelSize
+    public enum ParcelType
     {
         Small,
         Medium,
         Large,
-        ExtraLarge
+        ExtraLarge,
+        Heavy
     }
 }

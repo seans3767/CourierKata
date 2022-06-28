@@ -1,18 +1,19 @@
-﻿
+﻿using CourierKata.Models.DeliveryItems;
+
 namespace CourierKata.Models
 {
     public class DeliveryCostSummary
     {
-        public IList<ParcelCost> ParcelCosts { get; private set; }
-        public int TotalCostPence { get; private set; }
-        public int SpeedyShippingCostPence { get; private set; }
+        public IList<DeliveryItem> DeliveryItems { get; private set; }
+        public int TotalCostCents { get; private set; }
+        public int SpeedyShippingCostCents { get; private set; }
 
-        public DeliveryCostSummary(IList<ParcelCost> parcelCosts)
+        public DeliveryCostSummary(IList<DeliveryItem> deliveryItems)
         {
-            ArgumentNullException.ThrowIfNull(parcelCosts);
-            ParcelCosts = parcelCosts;
-            TotalCostPence = parcelCosts.Sum(pc => pc.TotalCostPence);
-            SpeedyShippingCostPence = TotalCostPence * 2;
+            ArgumentNullException.ThrowIfNull(deliveryItems);
+            DeliveryItems = deliveryItems;
+            TotalCostCents = deliveryItems.Sum(pc => pc.TotalCostCents);
+            SpeedyShippingCostCents = TotalCostCents * 2;
         }
     }
 }

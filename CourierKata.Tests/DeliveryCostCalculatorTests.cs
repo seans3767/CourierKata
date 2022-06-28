@@ -25,7 +25,8 @@ namespace CourierKata.Tests
         {
             var parcel = new Parcel(1, 1, 1, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
-            Assert.Equal(300, result.TotalCostPence);
+            Assert.Equal(ParcelType.Small, result.DeliveryItems[0].Type);
+            Assert.Equal(300, result.TotalCostCents);
         }
 
         [Fact]
@@ -33,7 +34,8 @@ namespace CourierKata.Tests
         {
             var parcel = new Parcel(5, 10, 20, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
-            Assert.Equal(800, result.TotalCostPence);
+            Assert.Equal(ParcelType.Medium, result.DeliveryItems[0].Type);
+            Assert.Equal(800, result.TotalCostCents);
         }
 
         [Fact]
@@ -41,7 +43,8 @@ namespace CourierKata.Tests
         {
             var parcel = new Parcel(80, 10, 20, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
-            Assert.Equal(1500, result.TotalCostPence);
+            Assert.Equal(ParcelType.Large, result.DeliveryItems[0].Type);
+            Assert.Equal(1500, result.TotalCostCents);
         }
 
         [Fact]
@@ -49,7 +52,8 @@ namespace CourierKata.Tests
         {
             var parcel = new Parcel(110, 50, 20, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
-            Assert.Equal(2500, result.TotalCostPence);
+            Assert.Equal(ParcelType.ExtraLarge, result.DeliveryItems[0].Type);
+            Assert.Equal(2500, result.TotalCostCents);
         }
 
         [Fact]
@@ -69,7 +73,7 @@ namespace CourierKata.Tests
 
             var result = DeliveryCostCalculator.CalculateCost(parcels);
 
-            Assert.Equal(expected, result.TotalCostPence);
+            Assert.Equal(expected, result.TotalCostCents);
         }
 
         [Fact]
@@ -77,7 +81,7 @@ namespace CourierKata.Tests
         {
             var parcel = new Parcel(5, 15, 20, 1);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
-            Assert.Equal(1600, result.SpeedyShippingCostPence);
+            Assert.Equal(1600, result.SpeedyShippingCostCents);
         }
 
         [Fact]
@@ -95,7 +99,7 @@ namespace CourierKata.Tests
 
             var result = DeliveryCostCalculator.CalculateCost(parcels);
 
-            Assert.Equal(expected, result.SpeedyShippingCostPence);
+            Assert.Equal(expected, result.SpeedyShippingCostCents);
         }
 
         [Fact]
@@ -103,7 +107,7 @@ namespace CourierKata.Tests
         {
             var parcel = new Parcel(1, 1, 1, weightKilograms: 2);
             var result = DeliveryCostCalculator.CalculateCost(parcel);
-            var individualParcelCost = result.ParcelCosts.First(c => c.Parcel == parcel).TotalCostPence;
+            var individualParcelCost = result.DeliveryItems.First(c => c.Parcel == parcel).TotalCostCents;
             Assert.Equal(300 + 200, individualParcelCost);
         }
 
@@ -124,7 +128,37 @@ namespace CourierKata.Tests
 
             var result = DeliveryCostCalculator.CalculateCost(parcels);
 
-            Assert.Equal(expectedTotal, result.TotalCostPence);
+            Assert.Equal(expectedTotal, result.TotalCostCents);
+        }
+
+        [Fact]
+        public void CalculateCost_Single_Heavy()
+        {
+            var parcel = new Parcel(1, 1, 1, weightKilograms: 50);
+            var result = DeliveryCostCalculator.CalculateCost(parcel);
+            var individualParcelCost = result.DeliveryItems.First(c => c.Parcel == parcel).TotalCostCents;
+            Assert.Equal(ParcelType.Heavy, result.DeliveryItems[0].Type);
+            Assert.Equal(5000, individualParcelCost);
+        }
+
+        [Fact]
+        public void CalculateCost_Single_ExtraLargeCheaperThanHeavy()
+        {
+            var parcel = new Parcel(100, 100, 100, weightKilograms: 22);
+            var result = DeliveryCostCalculator.CalculateCost(parcel);
+            var individualParcelCost = result.DeliveryItems.First(c => c.Parcel == parcel).TotalCostCents;
+            Assert.Equal(ParcelType.ExtraLarge, result.DeliveryItems[0].Type);
+            Assert.Equal(4900, individualParcelCost);
+        }
+
+        [Fact]
+        public void CalculateCost_Single_HeavyCheaperThanExtraLarge()
+        {
+            var parcel = new Parcel(100, 100, 100, weightKilograms: 23);
+            var result = DeliveryCostCalculator.CalculateCost(parcel);
+            var individualParcelCost = result.DeliveryItems.First(c => c.Parcel == parcel).TotalCostCents;
+            Assert.Equal(ParcelType.Heavy, result.DeliveryItems[0].Type);
+            Assert.Equal(5000, individualParcelCost);
         }
     }
 }

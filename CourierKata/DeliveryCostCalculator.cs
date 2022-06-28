@@ -1,88 +1,59 @@
 ﻿using CourierKata.Models;
+using CourierKata.Models.DeliveryItems;
 using System.ComponentModel;
 
 namespace CourierKata
 {
     public static class DeliveryCostCalculator
     {
-        private const int SmallParcelCostPence = 300;
-        private const int MediumParcelCostPence = 800;
-        private const int LargeParcelCostPence = 1500;
-        private const int ExtraLargeParcelCostPence = 2500;
-
-        private const int SmallParcelWeightLimitKilograms = 1;
-        private const int MediumParcelWeightLimitKilograms = 3;
-        private const int LargeParcelWeightLimitKilograms = 6;
-        private const int ExtraLargeParcelWeightLimitKilograms = 10;
-
-        private const int ExcessWeightCostPencePerKilogram = 200;
-
         public static DeliveryCostSummary CalculateCost(Parcel parcel)
         {
             ArgumentNullException.ThrowIfNull(parcel);
 
-            var cost = GetParcelCost(parcel);
+            var item = GetLowestCostDeliveryItemForParcel(parcel);
 
-            var parcelCosts = new List<ParcelCost>(1) { cost };
+            var deliveryItems = new List<DeliveryItem>(1) { item };
 
-            return new DeliveryCostSummary(parcelCosts);
+            return new DeliveryCostSummary(deliveryItems);
         }
 
         public static DeliveryCostSummary CalculateCost(IEnumerable<Parcel> parcels)
         {
             ArgumentNullException.ThrowIfNull(parcels);
 
-            var parcelCosts = parcels
-                .Select(p => GetParcelCost(p))
+            var deliveryItems = parcels
+                .Select(p => GetLowestCostDeliveryItemForParcel(p))
                 .ToList();
 
-            return new DeliveryCostSummary(parcelCosts);
+            return new DeliveryCostSummary(deliveryItems);
         }
 
-        private static ParcelCost GetParcelCost(Parcel parcel)
+        private static DeliveryItem GetLowestCostDeliveryItemForParcel(Parcel parcel)
         {
-            var costPence = GetParcelCostPenceForSize(parcel.Size);
+            DeliveryItem lowestCostDeliveryItem = null;
 
-            var parcelCost = new ParcelCost()
+            foreach (ParcelType type in Enum.GetValues(typeof(ParcelType)))
             {
-                Parcel = parcel,
-                BaseSizeCostPence = costPence
-            };
+                if (ParcelCouldBeType(parcel, type))
+                {
+                    var deliveryItem = DeliveryItemFactory.GetDeliveryItem(type, parcel);
 
-            var excessWeightKilograms = ExcessWeightKilograms(parcel);
-
-            if (excessWeightKilograms.HasValue)
-            {
-                parcelCost.ExcessWeightCostPence = excessWeightKilograms.Value * ExcessWeightCostPencePerKilogram;
+                    if (lowestCostDeliveryItem == null ||
+                        deliveryItem.TotalCostCents < lowestCostDeliveryItem.TotalCostCents)
+                    {
+                        lowestCostDeliveryItem = deliveryItem;
+                    }
+                }
             }
 
-            return parcelCost;
+            return lowestCostDeliveryItem;
         }
 
-        private static int GetParcelCostPenceForSize(ParcelSize size)
+        private static bool ParcelCouldBeType(Parcel parcel, ParcelType type)
         {
-            return size switch
-            {
-                ParcelSize.Small => SmallParcelCostPence,
-                ParcelSize.Medium => MediumParcelCostPence,
-                ParcelSize.Large => LargeParcelCostPence,
-                ParcelSize.ExtraLarge => ExtraLargeParcelCostPence,
-                _ => throw new InvalidEnumArgumentException($"Unknown parcel size '{size}'.")
-            };
-        }
+            var validator = ParcelTypeValidatorFactory.GetParcelTypeValidator(type);
 
-        private static int? ExcessWeightKilograms(Parcel parcel)
-        {
-            var weightDifference = parcel.Size switch
-            {
-                ParcelSize.Small => parcel.WeightKilograms - SmallParcelWeightLimitKilograms,
-                ParcelSize.Medium => parcel.WeightKilograms - MediumParcelWeightLimitKilograms,
-                ParcelSize.Large => parcel.WeightKilograms - LargeParcelWeightLimitKilograms,
-                ParcelSize.ExtraLarge => parcel.WeightKilograms - ExtraLargeParcelWeightLimitKilograms,
-                _ => throw new InvalidEnumArgumentException($"Unknown parcel size '{parcel.Size}'.")
-            };
-
-            return weightDifference > 0 ? weightDifference : null;
+            return validator.IsValid(parcel);
         }
     }
 }
