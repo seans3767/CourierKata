@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourierKata", "CourierKata\CourierKata.csproj", "{7892057B-48D3-4E46-A4DA-6C5B7FE52004}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourierKata.Tests", "CourierKata.Tests\CourierKata.Tests.csproj", "{6A1952EA-E893-4305-82B5-394C1B258304}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7892057B-48D3-4E46-A4DA-6C5B7FE52004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7892057B-48D3-4E46-A4DA-6C5B7FE52004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7892057B-48D3-4E46-A4DA-6C5B7FE52004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7892057B-48D3-4E46-A4DA-6C5B7FE52004}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A1952EA-E893-4305-82B5-394C1B258304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A1952EA-E893-4305-82B5-394C1B258304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A1952EA-E893-4305-82B5-394C1B258304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A1952EA-E893-4305-82B5-394C1B258304}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67E5A92E-F577-4532-9E92-9EF6B79C1901}
+	EndGlobalSection
+EndGlobal
