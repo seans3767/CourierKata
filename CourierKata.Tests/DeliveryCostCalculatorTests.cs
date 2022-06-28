@@ -1,6 +1,7 @@
 ﻿using CourierKata.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace CourierKata.Tests
@@ -95,6 +96,35 @@ namespace CourierKata.Tests
             var result = DeliveryCostCalculator.CalculateCost(parcels);
 
             Assert.Equal(expected, result.SpeedyShippingCostPence);
+        }
+
+        [Fact]
+        public void CalculateCost_Single_ExcessWeightCharged()
+        {
+            var parcel = new Parcel(1, 1, 1, weightKilograms: 2);
+            var result = DeliveryCostCalculator.CalculateCost(parcel);
+            var individualParcelCost = result.ParcelCosts.First(c => c.Parcel == parcel).TotalCostPence;
+            Assert.Equal(300 + 200, individualParcelCost);
+        }
+
+        [Fact]
+        public void CalculateCost_Multiple_ExcessWeightCharged()
+        {
+            var parcels = new List<Parcel>()
+            {
+                new Parcel(1, 2, 3, 1),        // small, $3, 0kg excess
+                new Parcel(3, 5, 10, 6),       // medium, $8, 3kg excess
+                new Parcel(10, 15, 60, 1),     // large, $15, 0kg excess
+                new Parcel(150, 40, 40, 15),    // extra large, $25, 5kg excess
+            };
+
+            var expectedBaseCost = (300 + 800 + 1500 + 2500);
+            var expectedExcessCost = (3 + 5) * 200;
+            var expectedTotal = expectedBaseCost + expectedExcessCost;
+
+            var result = DeliveryCostCalculator.CalculateCost(parcels);
+
+            Assert.Equal(expectedTotal, result.TotalCostPence);
         }
     }
 }

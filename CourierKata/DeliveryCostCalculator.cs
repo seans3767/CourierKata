@@ -10,6 +10,13 @@ namespace CourierKata
         private const int LargeParcelCostPence = 1500;
         private const int ExtraLargeParcelCostPence = 2500;
 
+        private const int SmallParcelWeightLimitKilograms = 1;
+        private const int MediumParcelWeightLimitKilograms = 3;
+        private const int LargeParcelWeightLimitKilograms = 6;
+        private const int ExtraLargeParcelWeightLimitKilograms = 10;
+
+        private const int ExcessWeightCostPencePerKilogram = 200;
+
         public static DeliveryCostSummary CalculateCost(Parcel parcel)
         {
             ArgumentNullException.ThrowIfNull(parcel);
@@ -36,11 +43,20 @@ namespace CourierKata
         {
             var costPence = GetParcelCostPenceForSize(parcel.Size);
 
-            return new ParcelCost()
+            var parcelCost = new ParcelCost()
             {
                 Parcel = parcel,
-                CostPence = costPence
+                BaseSizeCostPence = costPence
             };
+
+            var excessWeightKilograms = ExcessWeightKilograms(parcel);
+
+            if (excessWeightKilograms.HasValue)
+            {
+                parcelCost.ExcessWeightCostPence = excessWeightKilograms.Value * ExcessWeightCostPencePerKilogram;
+            }
+
+            return parcelCost;
         }
 
         private static int GetParcelCostPenceForSize(ParcelSize size)
@@ -53,6 +69,20 @@ namespace CourierKata
                 ParcelSize.ExtraLarge => ExtraLargeParcelCostPence,
                 _ => throw new InvalidEnumArgumentException($"Unknown parcel size '{size}'.")
             };
+        }
+
+        private static int? ExcessWeightKilograms(Parcel parcel)
+        {
+            var weightDifference = parcel.Size switch
+            {
+                ParcelSize.Small => parcel.WeightKilograms - SmallParcelWeightLimitKilograms,
+                ParcelSize.Medium => parcel.WeightKilograms - MediumParcelWeightLimitKilograms,
+                ParcelSize.Large => parcel.WeightKilograms - LargeParcelWeightLimitKilograms,
+                ParcelSize.ExtraLarge => parcel.WeightKilograms - ExtraLargeParcelWeightLimitKilograms,
+                _ => throw new InvalidEnumArgumentException($"Unknown parcel size '{parcel.Size}'.")
+            };
+
+            return weightDifference > 0 ? weightDifference : null;
         }
     }
 }

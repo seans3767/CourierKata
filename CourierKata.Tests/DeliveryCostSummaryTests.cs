@@ -28,7 +28,7 @@ namespace CourierKata.Tests
             var parcelCost = new ParcelCost()
             {
                 Parcel = parcel,
-                CostPence = 99
+                BaseSizeCostPence = 99
             };
             var parcelCosts = new List<ParcelCost>() { parcelCost };
             var summary = new DeliveryCostSummary(parcelCosts);
@@ -41,17 +41,17 @@ namespace CourierKata.Tests
             var parcelCost1 = new ParcelCost()
             {
                 Parcel = new Parcel(1, 2, 3, 1),
-                CostPence = 99
+                BaseSizeCostPence = 99
             };
             var parcelCost2 = new ParcelCost()
             {
                 Parcel = new Parcel(1, 2, 3, 1),
-                CostPence = 250
+                BaseSizeCostPence = 250
             };
             var parcelCost3 = new ParcelCost()
             {
                 Parcel = new Parcel(1, 2, 3, 1),
-                CostPence = 10000
+                BaseSizeCostPence = 10000
             };
             var parcelCosts = new List<ParcelCost>() { parcelCost1, parcelCost2, parcelCost3 };
             var summary = new DeliveryCostSummary(parcelCosts);
@@ -65,7 +65,7 @@ namespace CourierKata.Tests
             var parcelCost = new ParcelCost()
             {
                 Parcel = parcel,
-                CostPence = 99
+                BaseSizeCostPence = 99
             };
             var parcelCosts = new List<ParcelCost>() { parcelCost };
             var summary = new DeliveryCostSummary(parcelCosts);

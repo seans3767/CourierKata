@@ -11,7 +11,7 @@ namespace CourierKata.Models
         {
             ArgumentNullException.ThrowIfNull(parcelCosts);
             ParcelCosts = parcelCosts;
-            TotalCostPence = parcelCosts.Sum(pc => pc.CostPence);
+            TotalCostPence = parcelCosts.Sum(pc => pc.TotalCostPence);
             SpeedyShippingCostPence = TotalCostPence * 2;
         }
     }
