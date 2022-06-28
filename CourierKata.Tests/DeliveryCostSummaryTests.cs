@@ -57,5 +57,20 @@ namespace CourierKata.Tests
             var summary = new DeliveryCostSummary(parcelCosts);
             Assert.Equal(10349, summary.TotalCostPence);
         }
+
+        [Fact]
+        public void SingleItemSpeedyShippingIsDouble()
+        {
+            var parcel = new Parcel(1, 2, 3);
+            var parcelCost = new ParcelCost()
+            {
+                Parcel = parcel,
+                CostPence = 99
+            };
+            var parcelCosts = new List<ParcelCost>() { parcelCost };
+            var summary = new DeliveryCostSummary(parcelCosts);
+            Assert.Equal(99, summary.TotalCostPence);
+            Assert.Equal(198, summary.SpeedyShippingCostPence);
+        }
     }
 }

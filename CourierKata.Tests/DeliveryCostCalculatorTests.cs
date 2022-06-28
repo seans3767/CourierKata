@@ -70,5 +70,31 @@ namespace CourierKata.Tests
 
             Assert.Equal(expected, result.TotalCostPence);
         }
+
+        [Fact]
+        public void CalculateCost_Single_SpeedyShipping()
+        {
+            var parcel = new Parcel(5, 15, 20);
+            var result = DeliveryCostCalculator.CalculateCost(parcel);
+            Assert.Equal(1600, result.SpeedyShippingCostPence);
+        }
+
+        [Fact]
+        public void CalculateCost_Multiple_SpeedyShipping()
+        {
+            var parcels = new List<Parcel>()
+            {
+                new Parcel(3, 5, 8),        // small, $3
+                new Parcel(3, 5, 10),       // medium, $8
+                new Parcel(10, 15, 60),     // large, $15
+                new Parcel(150, 40, 40),    // extra large, $25
+            };
+
+            var expected = (300 + 800 + 1500 + 2500) * 2;
+
+            var result = DeliveryCostCalculator.CalculateCost(parcels);
+
+            Assert.Equal(expected, result.SpeedyShippingCostPence);
+        }
     }
 }
